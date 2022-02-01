@@ -1,0 +1,2 @@
+{{Str::limit('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy te
+popularised in the 1960s with the release ocontaining like Aldus PageMaker including versions of Lorem Ipsum',150)}}
