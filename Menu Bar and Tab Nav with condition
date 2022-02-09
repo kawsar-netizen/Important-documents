@@ -1,0 +1,87 @@
+Route::get('receipt/{id}',[ReceiptsController::class,'receipts_index']);
+//======================= controller =================================//
+public function receipts_index($id)
+    {
+        $this->check();
+        $active = 'das';
+
+        if($id=='bosot')
+        {
+            $active ='bosot';
+        }elseif($id='tread')
+        {
+            $active ='tread';
+        }
+        else{
+            $active ='tread';
+        }
+
+        return view('backend.pages.Receipts.receipts_index', compact('active'));
+    }
+    //================================= sitebar menu ==================================//
+          <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{URL::to('receipt/'.'tread')}}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p style="font-size:12px ">সকল রশিদ সমূহ</p>
+                                        </a>
+                                    </li>
+                                   
+                                    <li class="nav-item active" role="presentation">
+                                        <a href="{{URL::to('receipt/'.'tread')}}" class="nav-link" >
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p style="font-size:12px "> ট্রেড লাইসেন্স রশিদ</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link"  href="{{URL::to('receipt/'.'bosot')}}" >
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p style="font-size:12px ">বসতভিটার কর রশিদ</p>
+                                        </a>
+                                    </li>
+                 </ul>
+    //======================================================Tab nav link ===============================================================
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link <?= ($active == 'tread') ? 'active' : '' ?>" id="home-tab" data-toggle="tab" href="#Licensereceipt" role="tab"
+                        aria-controls="home" aria-selected="true">ট্রেড লাইসেন্স রসিদ</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link <?= ($active == 'bosot') ? 'active' : '' ?>" id="profile-tab" data-toggle="tab" href="#Basatvitareceipt" role="tab"
+                        aria-controls="profile" aria-selected="false">বসতভিটার কর</a>
+                </li>
+                </ul>
+     //==============================Tab content =========================================================================================================
+                 <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade  <?= ($active == 'tread') ? 'show active' : '' ?>" id="Licensereceipt" role="tabpanel" aria-labelledby="home-tab">
+                    <section class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <h1 style="color: rgb(89, 89, 133)"> ট্রেড লাইসেন্স রসিদ</h1>
+                                </div>
+                                <div class="col-sm-4">
+
+                                </div>
+                            </div>
+
+                        </div><!-- /.container-fluid -->
+                    </section>
+                    </div>
+                                    <div class="tab-pane fade <?= ($active == 'bosot') ? 'show active' : '' ?>" id="Basatvitareceipt" role="tabpanel" aria-labelledby="profile-tab">
+                    <section class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <h1 style="color: rgb(89, 89, 133)">বসত ভিটা কর রসিদ</h1>
+                                </div>
+                                <div class="col-sm-4">
+
+                                </div>
+
+                            </div>
+
+                        </div><!-- /.container-fluid -->
+                    </section>
+                    </div>
+                    </div>
