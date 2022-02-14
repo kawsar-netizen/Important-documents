@@ -3,7 +3,7 @@ Route::get('receipt/{id}',[ReceiptsController::class,'receipts_index']);
 public function receipts_index($id)
     {
         $this->check();
-        $active = 'das';
+        
 
         if($id=='bosot')
         {
