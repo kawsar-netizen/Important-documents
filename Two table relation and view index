@@ -1,0 +1,7 @@
+    public function customer_report(){
+
+        $customers = DB::SELECT('SELECT c.*, a.account_no FROM customer_infos c LEFT JOIN account_openings a ON c.id = a.customer_id;');
+
+        return view('admin.report.customer',compact('customers'));
+    }
+    //customer_infos root table and account_openings child table then relation 
