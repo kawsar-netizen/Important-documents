@@ -1,0 +1,144 @@
+//Route Here.....
+Route::get('system_user_map','BranchUserController@system_user_map')->name('systemUserMap');
+Route::post('system_user_map','BranchUserController@system_user_map_store')->name('systemUserMapStore');
+Route::get('system_user_map/edit/{id}','BranchUserController@system_user_map_edit')->name('systemUserMapedit');
+Route::post('system_user_map/update/{id}','BranchUserController@system_user_map_update')->name('systemUserMapupdate');
+
+//Controller Here.....
+  //System user map function here by Kawsar
+
+  public function system_user_map()
+  {
+    $systemGet = DB::table('systems')->get();
+    return view('user_map.index',compact('systemGet'));
+  }
+
+  public function system_user_map_store(Request $request)
+  {
+
+    $user_id = Auth::user()->id;
+    $currentTimestamp = date('Y-m-d H:i:s');
+      DB::table('systems')->insert([
+     'system_name' => $request->system_name,
+     'sys_id' => $request->sys_id,
+     'entry_by' =>$user_id,
+     'sys_status'=> 0,
+     'entry_date' => $currentTimestamp 
+  ]);
+  return redirect()->back();
+ 
+  }
+  public function system_user_map_edit($id){
+    $systemEdit = DB::table('systems')->find($id);
+
+    return view('user_map.edit',compact('systemEdit'));
+   
+  }
+
+  public function system_user_map_update(Request $request ,$id){
+
+    $system_id =(int) $id;
+    
+    DB::table('systems')->where('id', $system_id)->update([
+      'system_name' => $request->system_name,
+      'sys_id' => $request->sys_id,
+      'sys_status'=> (int) $request->input('sys_status') == true ? 1 : 0,
+   ]);
+   return redirect()->route('systemUserMap');
+  }
+  //Edit Page Here...
+                          <form action="{{route('systemUserMapupdate',$systemEdit->id)}}" method="POST">
+                            @csrf
+                            
+                            <div class="form-group row">
+
+                                <label class="col-lg-2 col-form-label"><b>System Name</b></label>
+
+                                <div class="col-lg-10">
+                                    <input type="text" name="system_name" id="system_name" class="form-control"
+                                        value="{{ $systemEdit->system_name }}">
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label class="col-lg-2 col-form-label"><b>System User Id</b></label>
+
+                                <div class="col-lg-10">
+
+                                    <input type="text" name="sys_id" id="sys_id"
+                                        class="form-control"value="{{ $systemEdit->sys_id }}">
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+
+                                <label class="col-lg-2 col-form-label"><b>System Status</b></label>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="active" type="radio" name="sys_status"
+                                        value="1" {{ $systemEdit->sys_status == '1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="active">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="deactive" type="radio" name="sys_status"
+                                        value="0" {{ $systemEdit->sys_status == '0' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="deactive">Deactive</label>
+                                </div>
+                
+
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="offset-lg-2 col-lg-10">
+                                    <input type="submit"class="btn btn-sm btn-success insert_btn" value="Update">
+                                </div>
+                            </div>
+
+                        </form>
+//Index Page Here...
+
+                        <table id="myTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="color: black">Sl</th>
+
+                                    <th scope="col" style="color: black">System Name</th>
+                                    <th scope="col" style="color: black">System user Id</th>
+                                    <th scope="col" style="color: black">Status</th>
+                                    {{-- <th scope="col" style="color: black">Entry Date</th> --}}
+                                    <th scope="col" style="color: black;width: 22%;">Action</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                @foreach ($systemGet as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->system_name }}</td>
+                                        <td>{{ $item->sys_id }}</td>
+
+                                        <td>
+
+                                            @if ($item->sys_status == '1')
+                                                <div class="mb-2 mr-2 badge badge-primary">Active</div>
+                                            @else
+                                                <div class="mb-2 mr-2 badge badge-danger">Deactive</div>
+                                            @endif
+
+                                        </td>
+                                        <td style="width: 22%;text-align: center;">
+                                            <a href="{{ route('systemUserMapedit', $item->id) }}">
+                                                <button type="button" class="btn btn-info btn-sm">Edit</button>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+
+                            </tbody>
+
+                        </table>
+
